@@ -1,11 +1,13 @@
 # 📊 React Analytics Dashboard
 
+After being tired with over the top analytics solutions for my web app, I decided it's going to be fun to make light weight solution of my own, and here it is for you all to use 😊
+
 A lightweight analytics module for tracking **unique visitors per day** in React applications. Logs visits via a **PHP backend** and displays data in a **graphic dashboard**.
 
 ## 📦 Installation
 
 ```sh
-git clone https://github.com/YOUR_USERNAME/react-lw-analytics.git
+clone the repository
 ```
 
 In your **React project**, link the module:
