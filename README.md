@@ -47,6 +47,7 @@ import AnalyticsDashboard from "react-lw-analytics";
 ## 🖥️ Backend Setup
 
 The backend is included in the package. The only setup required is to create `analytics.json` inside the **public/backend folder** of your React project:
+
 ‼️ do not replace that file after first creating while deploying your app - it stores the data, you would lose them
 
 ```sh
