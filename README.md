@@ -49,14 +49,13 @@ import AnalyticsDashboard from "react-lw-analytics";
 The backend is included in the package. The only setup required is to create `analytics.json` inside the **public/backend folder** of your React project:
 
 ```sh
-touch public/backend/analytics.json
-chmod 666 public/backend/analytics.json
+public/backend/analytics.json
 ```
 
 If running locally, start a PHP server in the backend folder:
 
 ```sh
-cd path-to-your-react-app/public
+cd path-to-your-cloned-repo
 php -S localhost:8001
 ```
 
