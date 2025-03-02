@@ -1,0 +1,10 @@
+{
+  "name": "react-analytics-module",
+  "version": "1.0.0",
+  "main": "analytics-dashboard/AnalyticsDashboard.tsx",
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "recharts": "^2.1.9"
+  }
+}
