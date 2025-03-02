@@ -1,10 +1,13 @@
 {
-  "name": "react-analytics-module",
+  "name": "react-lw-analytics",
   "version": "1.0.0",
-  "main": "analytics-dashboard/AnalyticsDashboard.tsx",
-  "dependencies": {},
+  "main": "dashboard/analytics.tsx",
+  "types": "dashboard/analytics.tsx",
   "peerDependencies": {
-    "react": "^18.0.0",
-    "recharts": "^2.1.9"
+    "react": "^19.0.0",
+    "recharts": "^2.15.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.8"
   }
 }
