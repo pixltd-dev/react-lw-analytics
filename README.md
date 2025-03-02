@@ -4,6 +4,8 @@ After being tired with over the top analytics solutions for my web app, I decide
 
 A lightweight analytics module for tracking **unique visitors per day** in React applications. Logs visits via a **PHP backend** and displays data in a **graphic dashboard**.
 
+![first version screenshot](./screen.jpg)
+
 ## 📦 Installation
 
 ```sh
