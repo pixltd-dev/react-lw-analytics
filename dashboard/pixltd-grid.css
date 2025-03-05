@@ -127,34 +127,50 @@
 /* Spacing utilities */
 .sv-8 {
   height: 8px;
+  display: block;
+  flex: 0 0 auto;  
 }
 
 .sv-16 {
   height: 16px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .sv-32 {
   height: 32px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .sv-64 {
   height: 64px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .sh-8 {
   width: 8px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .sh-16 {
   width: 16px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .sh-32 {
   width: 32px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .sh-64 {
   width: 64px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 /* Padding utilities */
