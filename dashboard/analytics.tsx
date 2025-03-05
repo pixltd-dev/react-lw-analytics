@@ -13,7 +13,7 @@ import "./pixltd-grid.css";
 const API_BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:8001/backend"
-    : "/backend";
+    : "./backend";
 
 export const logVisit = async () => {
   try {
