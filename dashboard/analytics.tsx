@@ -112,14 +112,13 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
         </div>
       </div>
       <div className="sv-32"></div>
-      <div className="row ar-center-h" style={{ maxWidth: "600px" }}>
+      <div className="row ar-center-h p-16" style={{ maxWidth: "600px" }}>
         <div className="col ac-left">
           <div className="analytics-card small">
             <h2 className="analytics-title small">Total</h2>
             <h1 className="analytics-number">{getTotalVisitors()}</h1>
           </div>
         </div>
-        {/* <div className="sh-32"></div> */}
         <div className="col ac-right">
           <div className="analytics-card small">
             <h2 className="analytics-title small">Weekly</h2>
@@ -127,8 +126,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
           </div>
         </div>
       </div>
-      <div className="sv-32"></div>
-      <div className="row ar-center-h p-8">
+      <div className="row ar-center-h p-16" style={{ maxWidth: "600px" }}>
         <div className="col ac-center-h">
           <div className="analytics-card">
             <h2 className="analytics-title small">Daily</h2>
