@@ -1,0 +1,192 @@
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container for overall layout */
+.box-old {
+  width: 100%;
+  height: 100dvh; /* Full dynamic viewport height */
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+}
+
+/* Container for overall layout without taking expanded space */
+.box {
+  /* width: 100%; */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Row to layout columns horizontally */
+.row,
+.row-full {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+}
+
+/* Full height row */
+.row-full {
+  flex: 1;
+}
+
+/* Column to automatically size based on content */
+.col,
+.col-min {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Column-minimal to only take as much width as its content */
+.col-min {
+  flex: 0 0 auto;
+}
+
+/* Alignment for rows */
+
+/* Center content vertically in a row */
+.ar-center-v {
+  align-items: center;
+}
+
+/* Align content to the top in a row */
+.ar-top {
+  align-items: flex-start;
+}
+
+/* Align content to the bottom in a row */
+.ar-bot {
+  align-items: flex-end;
+}
+
+/* Center content horizontally in a row */
+.ar-center-h {
+  justify-content: center;
+}
+
+.ar-center-vh {
+  align-items: center;
+  justify-content: center;
+}
+
+/* Align content to the left in a row */
+.ar-left {
+  justify-content: flex-start;
+}
+
+/* Align content to the right in a row */
+.ar-right {
+  justify-content: flex-end;
+}
+
+/* Alignment for columns */
+
+/* Center content vertically in a column */
+.ac-center-v {
+  justify-content: center;
+}
+
+/* Center content horizontally in a column */
+.ac-center-h {
+  align-items: center;
+}
+
+.ac-center-vh {
+  justify-content: center;
+  align-items: center;
+}
+
+/* Align content to the top in a column */
+.ac-top {
+  justify-content: flex-start;
+}
+
+/* Align content to the bottom in a column */
+.ac-bottom {
+  justify-content: flex-end;
+}
+
+/* Align content to the start in a column */
+.ac-left {
+  align-items: flex-start;
+}
+
+/* Align content to the end in a column */
+.ac-right {
+  align-items: flex-end;
+}
+
+/* Spacing utilities */
+.sv-8 {
+  height: 8px;
+}
+
+.sv-16 {
+  height: 16px;
+}
+
+.sv-32 {
+  height: 32px;
+}
+
+.sv-64 {
+  height: 64px;
+}
+
+.sh-8 {
+  width: 8px;
+}
+
+.sh-16 {
+  width: 16px;
+}
+
+.sh-32 {
+  width: 32px;
+}
+
+.sh-64 {
+  width: 64px;
+}
+
+/* Padding utilities */
+.p-8 {
+  padding: 8px;
+}
+
+.p-16 {
+  padding: 16px;
+}
+
+.p-32 {
+  padding: 32px;
+}
+
+.p-64 {
+  padding: 64px;
+}
+
+/* Margin utilities */
+.m-8 {
+  margin: 8px;
+}
+
+.m-16 {
+  margin: 16px;
+}
+
+.m-32 {
+  margin: 32px;
+}
+
+.m-64 {
+  margin: 64px;
+}

@@ -63,6 +63,22 @@ cd path-to-your-cloned-repo
 php -S localhost:8001
 ```
 
+## 🌐 Usage in a Normal HTML Site Subfolder
+
+If you have a plain HTML website, you can build and place analytics React app in a subfolder (e.g., `/mysite/analytics/`), and then simply include script to call the tracking function in your index.html and then look at the analytics in the react project in the subfolder.
+
+```sh
+<script>
+  function logVisit() {
+    fetch('mysite/analytics/backend/track.php', { method: 'POST' })
+      .catch(error => console.error('Failed to log visit:', error));
+  }
+
+  // Call it on page load, for example:
+  window.addEventListener('load', logVisit);
+</script>
+```
+
 ## 📜 License
 
 GNU GENERAL PUBLIC LICENSE

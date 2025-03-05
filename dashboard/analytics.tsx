@@ -7,8 +7,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import "./analytics.css";
+import "./pixltd-grid.css";
 
-// Determine the API base URL depending on environment
 const API_BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:8001/backend"
@@ -16,7 +17,7 @@ const API_BASE_URL =
 
 export const logVisit = async () => {
   try {
-    await fetch(`${API_BASE_URL}/track.php`, { method: "POST" }); // Calls the PHP script to log visit
+    await fetch(`${API_BASE_URL}/track.php`, { method: "POST" });
   } catch (error) {
     console.error("Failed to log visit:", error);
   }
@@ -66,24 +67,19 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
     }
   }, [data]);
 
-  // Function to slice the data so the first page may be shorter
-  // and the last page is always full (if data length > itemsPerPage)
   const getDisplayedData = () => {
     const totalPages = Math.ceil(data.length / itemsPerPage);
     if (totalPages <= 1) {
-      return data; // Only one page, no re-chunking needed
+      return data;
     }
     const remainder = data.length % itemsPerPage;
-    // If there's no remainder, normal segmentation
     if (remainder === 0) {
       const start = currentPage * itemsPerPage;
       return data.slice(start, start + itemsPerPage);
     }
-    // Otherwise, first page gets the leftover, last pages are full
     if (currentPage === 0) {
       return data.slice(0, remainder);
     } else {
-      // For subsequent pages, offset by remainder
       const offset = remainder + (currentPage - 1) * itemsPerPage;
       return data.slice(offset, offset + itemsPerPage);
     }
@@ -91,75 +87,101 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
 
   const displayedData = getDisplayedData();
 
+  const getTotalVisitors = () => {
+    return data.reduce((acc, { visits }) => acc + visits, 0);
+  };
+
+  const getThisWeekVisitors = () => {
+    return displayedData.reduce((acc, { visits }) => acc + visits, 0);
+  };
+
+  const canMoveNext = () => {
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    return currentPage < totalPages - 1;
+  };
+
+  const getHtmlTitle = () => {
+    return document.querySelector("title")?.textContent;
+  };
+
   return isAuthenticated ? (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#f5f5f7",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "12px",
-          boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
-          width: "90%",
-          maxWidth: "600px",
-        }}
-      >
-        <h2 style={{ textAlign: "center", color: "#333" }}>
-          Analytics Dashboard
-        </h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={displayedData}>
-            <XAxis dataKey="date" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Line
-              type="monotone"
-              dataKey="visits"
-              stroke="#007aff"
-              strokeWidth={2}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "10px",
-          }}
-        >
-          <button
-            onClick={handlePrevious}
-            style={{
-              backgroundColor: "#007aff",
-              color: "#fff",
-              border: "none",
-              padding: "8px 16px",
-              cursor: "pointer",
-              borderRadius: "4px",
-            }}
-          >
-            ←
-          </button>
-          <button
-            onClick={handleNext}
-            style={{
-              backgroundColor: "#007aff",
-              color: "#fff",
-              border: "none",
-              padding: "8px 16px",
-              cursor: "pointer",
-              borderRadius: "4px",
-            }}
-          >
-            →
-          </button>
+    <div className="mainBox">
+      <div className="top-bar">
+        <div className="col-min">
+          <h3>{getHtmlTitle()} - analytics</h3>
+        </div>
+      </div>
+      <div className="sv-32"></div>
+      <div className="row ar-center-h" style={{ maxWidth: "600px" }}>
+        <div className="col ac-left">
+          <div className="analytics-card small">
+            <h2 className="analytics-title small">Total</h2>
+            <h1 className="analytics-number">{getTotalVisitors()}</h1>
+          </div>
+        </div>
+        {/* <div className="sh-32"></div> */}
+        <div className="col ac-right">
+          <div className="analytics-card small">
+            <h2 className="analytics-title small">Weekly</h2>
+            <h1 className="analytics-number">{getThisWeekVisitors()}</h1>
+          </div>
+        </div>
+      </div>
+      <div className="sv-32"></div>
+      <div className="row ar-center-h p-8">
+        <div className="col ac-center-h">
+          <div className="analytics-card">
+            <h2 className="analytics-title small">Daily</h2>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart
+                data={displayedData}
+                margin={{ top: 10, right: 20, left: -30, bottom: 10 }}
+              >
+                <XAxis
+                  dataKey="date"
+                  tickFormatter={(dateString) => {
+                    const dateObj = new Date(dateString);
+                    return new Intl.DateTimeFormat(undefined, {
+                      day: "numeric",
+                      month: "short",
+                      // year: "numeric",
+                    }).format(dateObj);
+                  }}
+                />
+                <YAxis allowDecimals={false} />
+                <Tooltip
+                  labelFormatter={(dateString) => {
+                    const dateObj = new Date(dateString);
+                    return new Intl.DateTimeFormat(undefined, {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    }).format(dateObj);
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="visits"
+                  stroke="#007aff"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+            <div className="button-container">
+              <button onClick={handlePrevious} className="nav-button">
+                ←
+              </button>
+              {canMoveNext() && (
+                <button
+                  onClick={handleNext}
+                  disabled={!canMoveNext()}
+                  className="nav-button"
+                >
+                  →
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
