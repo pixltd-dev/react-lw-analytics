@@ -23,6 +23,11 @@ export const logVisit = async () => {
   }
 };
 
+interface DataEntry {
+  date: string;
+  visits: number;
+}
+
 interface AnalyticsDashboardProps {
   isAuthenticated: boolean;
 }
@@ -30,12 +35,21 @@ interface AnalyticsDashboardProps {
 const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
   isAuthenticated,
 }) => {
-  const [data, setData] = useState<{ date: string; visits: number }[]>([]);
+  const [data, setData] = useState<DataEntry[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 7;
+  const itemsPerPage = 7; // one week = 7 days
+
+  const computeTotalPages = () => {
+    if (data.length === 0) return 0;
+    const latestDate = new Date(data[0].date);
+    const earliestDate = new Date(data[data.length - 1].date);
+    const diffTime = Math.abs(latestDate.getTime() - earliestDate.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    return Math.ceil(diffDays / itemsPerPage);
+  };
 
   const handleNext = () => {
-    const totalPages = Math.ceil(data.length / itemsPerPage);
+    const totalPages = computeTotalPages();
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
     }
@@ -52,6 +66,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
       try {
         const response = await fetch(`${API_BASE_URL}/getAnalytics.php`);
         const json = await response.json();
+        json.reverse();
         setData(json);
       } catch (error) {
         console.error("Failed to fetch analytics:", error);
@@ -62,27 +77,44 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
 
   useEffect(() => {
     if (data.length > 0) {
-      const totalPages = Math.ceil(data.length / itemsPerPage);
+      const totalPages = computeTotalPages();
       setCurrentPage(totalPages - 1);
     }
   }, [data]);
 
   const getDisplayedData = () => {
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    if (totalPages <= 1) {
-      return data;
-    }
-    const remainder = data.length % itemsPerPage;
-    if (remainder === 0) {
-      const start = currentPage * itemsPerPage;
-      return data.slice(start, start + itemsPerPage);
-    }
-    if (currentPage === 0) {
-      return data.slice(0, remainder);
-    } else {
-      const offset = remainder + (currentPage - 1) * itemsPerPage;
-      return data.slice(offset, offset + itemsPerPage);
-    }
+    if (data.length === 0) return [];
+    const totalPages = computeTotalPages();
+
+    const latestDate = new Date(data[0].date);
+
+    const day = latestDate.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    const latestMonday = new Date(latestDate);
+    latestMonday.setDate(latestDate.getDate() + diff + 1); // Move to the latest Monday
+    latestMonday.setHours(0, 0, 0, 0);
+
+    const weekOffset = totalPages - 1 - currentPage;
+    const weekStart = new Date(latestMonday);
+    weekStart.setDate(latestMonday.getDate() - weekOffset * 7);
+
+    const weekData = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date(weekStart);
+      date.setDate(weekStart.getDate() + i);
+      const dateString = date.toISOString().split("T")[0];
+      const dayData = data.find(
+        (entry: DataEntry) => entry.date === dateString
+      );
+      return {
+        date: dateString,
+        visits: dayData ? dayData.visits : 0,
+      };
+    });
+
+    console.log("Week Data:", weekData);
+    console.log("Current Page:", currentPage);
+    console.log("Week Start:", weekStart.toISOString().split("T")[0]);
+    return weekData;
   };
 
   const displayedData = getDisplayedData();
@@ -96,8 +128,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
   };
 
   const canMoveNext = () => {
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    return currentPage < totalPages - 1;
+    return currentPage < computeTotalPages() - 1;
   };
 
   const getHtmlTitle = () => {
@@ -142,7 +173,6 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     return new Intl.DateTimeFormat(undefined, {
                       day: "numeric",
                       month: "short",
-                      // year: "numeric",
                     }).format(dateObj);
                   }}
                 />
